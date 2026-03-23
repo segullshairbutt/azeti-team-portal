@@ -11,11 +11,17 @@ interface Activity {
 function LiveFeed() {
   const [activities, setActivities] = useState<Activity[]>([])
   const [isActive, setIsActive] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const loadInitialActivities = async () => {
-      const initial = await fetchFeedActivity()
-      setActivities(initial)
+      try {
+        setError(null)
+        const initial = await fetchFeedActivity()
+        setActivities(initial)
+      } catch (err) {
+        setError('Failed to load activities. Please try again.')
+      }
     }
 
     loadInitialActivities()
@@ -25,8 +31,13 @@ function LiveFeed() {
     if (!isActive) return
 
     const interval = setInterval(async () => {
-      const newActivities = await fetchFeedActivity()
-      setActivities(prev => [...newActivities, ...prev].slice(0, 100))
+      try {
+        setError(null)
+        const newActivities = await fetchFeedActivity()
+        setActivities(prev => [...newActivities, ...prev].slice(0, 100))
+      } catch (err) {
+        setError('Failed to refresh activities. Will retry...')
+      }
     }, 3000)
 
     return () => clearInterval(interval)
@@ -58,7 +69,13 @@ function LiveFeed() {
         <span>{isActive ? 'Live updates active' : 'Feed paused'}</span>
       </div>
 
-      <div className="messages-container">
+      {error && (
+        <div className="error-message">
+          ⚠️ {error}
+        </div>
+      )}
+
+      {!error && <div className="messages-container">
         {activities.length === 0 ? (
           <div className="no-messages">Waiting for activities...</div>
         ) : (
@@ -66,7 +83,7 @@ function LiveFeed() {
             <ActivityCard key={index} activity={activity} />
           ))
         )}
-      </div>
+      </div>}
     </div>
   )
 }
