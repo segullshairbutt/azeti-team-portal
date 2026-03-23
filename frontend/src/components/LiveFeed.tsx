@@ -62,8 +62,8 @@ function LiveFeed() {
         {activities.length === 0 ? (
           <div className="no-messages">Waiting for activities...</div>
         ) : (
-          activities.map((activity) => (
-            <ActivityCard key={activity.id} activity={activity} />
+          activities.map((activity, index) => (
+            <ActivityCard key={index} activity={activity} />
           ))
         )}
       </div>
