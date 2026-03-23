@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { fetchUserActivity } from '../api/mockApi'
+import { fetchUserById, fetchUserActivity } from '../api/mockApi'
 import ProfileCard from './ProfileCard'
 import ActivityCard from './ActivityCard'
 
@@ -17,28 +17,46 @@ interface UserData {
 }
 
 function UserProfile() {
-  const [userData] = useState<UserData>({
-    name: 'Alex Johnson',
-    role: 'Senior Engineer',
-    email: 'alex.johnson@company.com',
-    lastActive: new Date().toLocaleString()
-  })
+  const [userData, setUserData] = useState<UserData | null>(null)
   const [recentActivity, setRecentActivity] = useState<Activity[]>([])
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const loadActivity = async () => {
+    const loadUserData = async () => {
       try {
+        setLoading(true)
         setError(null)
+        
+        // Fetch user details (includes last activity timestamp)
+        const user = await fetchUserById(1)
+        setUserData({
+          name: user.name,
+          role: 'Team Member',
+          email: user.email,
+          lastActive: user.lastActivity?.timestamp || 'No activity yet'
+        })
+        
+        // Fetch all activities for the user
         const activities = await fetchUserActivity()
         setRecentActivity(activities)
       } catch (err) {
-        setError('Failed to load recent activity. Please try again.')
+        setError('Failed to load user data. Please try again.')
+      } finally {
+        setLoading(false)
       }
     }
 
-    loadActivity()
+    loadUserData()
   }, [])
+
+  if (loading) {
+    return <div className="user-profile"><p>Loading...</p></div>
+  }
+
+  if (error || !userData) {
+    return <div className="user-profile"><p className="error-message">⚠️ {error}</p></div>
+  }
 
   return (
     <div className="user-profile">
