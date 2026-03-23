@@ -32,7 +32,7 @@ function UserProfile() {
     }
 
     loadActivity()
-  })
+  }, [])
 
   return (
     <div className="user-profile">
