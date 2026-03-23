@@ -26,7 +26,6 @@ function Dashboard() {
       setStats(data)
     } catch (err) {
       setError('Failed to load team statistics. Please try again.')
-      console.error('Error loading stats:', err)
     } finally {
       setLoading(false)
     }
