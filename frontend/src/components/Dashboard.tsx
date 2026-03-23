@@ -16,24 +16,31 @@ function Dashboard() {
   const [stats, setStats] = useState<TeamStats | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [autoRefresh, setAutoRefresh] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const loadTeamStats = async (team: string) => {
+    try {
+      setError(null)
+      setLoading(true)
+      const data = await fetchTeamStats(team)
+      setStats(data)
+    } catch (err) {
+      setError('Failed to load team statistics. Please try again.')
+      console.error('Error loading stats:', err)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
-    setLoading(true)
-    fetchTeamStats(selectedTeam).then(data => {
-      setStats(data)
-      setLoading(false)
-    })
+    loadTeamStats(selectedTeam)
   }, [selectedTeam])
 
   useEffect(() => {
     if (!autoRefresh) return
 
     const interval = setInterval(() => {
-      setLoading(true)
-      fetchTeamStats(selectedTeam).then(data => {
-        setStats(data)
-        setLoading(false)
-      })
+      loadTeamStats(selectedTeam)
     }, 10000)
 
     return () => clearInterval(interval)
@@ -76,6 +83,12 @@ function Dashboard() {
           </button>
         </div>
       </div>
+
+      {error && (
+        <div className="error-message">
+          ⚠️ {error}
+        </div>
+      )}
 
       {autoRefresh && (
         <div className="auto-refresh-indicator">
