@@ -24,11 +24,17 @@ function UserProfile() {
     lastActive: new Date().toLocaleString()
   })
   const [recentActivity, setRecentActivity] = useState<Activity[]>([])
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const loadActivity = async () => {
-      const activities = await fetchUserActivity()
-      setRecentActivity(activities)
+      try {
+        setError(null)
+        const activities = await fetchUserActivity()
+        setRecentActivity(activities)
+      } catch (err) {
+        setError('Failed to load recent activity. Please try again.')
+      }
     }
 
     loadActivity()
@@ -44,6 +50,12 @@ function UserProfile() {
 
       <div className="activity-section">
         <h3>Recent Activity</h3>
+
+        {error && (
+          <div className="error-message">
+            ⚠️ {error}
+          </div>
+        )}
 
         <div className="activity-list">
           {recentActivity.length === 0 ? (
