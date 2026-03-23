@@ -16,6 +16,8 @@ interface UserData {
   lastActive: string
 }
 
+const USER_ID = 1
+
 function UserProfile() {
   const [userData, setUserData] = useState<UserData | null>(null)
   const [recentActivity, setRecentActivity] = useState<Activity[]>([])
@@ -29,7 +31,7 @@ function UserProfile() {
         setError(null)
         
         // Fetch user details (includes last activity timestamp)
-        const user = await fetchUserById(1)
+        const user = await fetchUserById(USER_ID)
         setUserData({
           name: user.name,
           role: 'Team Member',
@@ -38,7 +40,7 @@ function UserProfile() {
         })
         
         // Fetch all activities for the user
-        const activities = await fetchUserActivity()
+        const activities = await fetchUserActivity(USER_ID)
         setRecentActivity(activities)
       } catch (err) {
         setError('Failed to load user data. Please try again.')

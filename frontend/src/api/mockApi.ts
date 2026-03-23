@@ -31,8 +31,8 @@ export const fetchFeedActivity = async (): Promise<Activity[]> => {
   return response.json()
 }
 
-export const fetchUserActivity = async (): Promise<Activity[]> => {
-  const response = await fetch(`${API_BASE}/users/1/activities`)
+export const fetchUserActivity = async (userId: number): Promise<Activity[]> => {
+  const response = await fetch(`${API_BASE}/users/${userId}/activities`)
   return response.json()
 }
 
