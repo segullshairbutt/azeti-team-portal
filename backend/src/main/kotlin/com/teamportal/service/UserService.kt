@@ -3,7 +3,9 @@ package com.teamportal.service
 import com.teamportal.dto.UserDetailDTO
 import com.teamportal.repository.ActivityRepository
 import com.teamportal.repository.UserRepository
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 import java.time.format.DateTimeFormatter
 
 @Service
@@ -27,7 +29,7 @@ class UserService(
 
     fun getUserById(userId: Long): UserDetailDTO {
         val user = userRepository.findById(userId)
-            .orElseThrow { RuntimeException("User not found: $userId") }
+            .orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND, "User not found: $userId") }
         
         val lastActivity = activityRepository.findFirstByUserIdOrderByTimestampDesc(userId)
         val lastActivityDTO = lastActivity?.let {
