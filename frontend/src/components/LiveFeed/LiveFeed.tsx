@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import { fetchFeedActivity } from '../api/mockApi'
-import ActivityCard from './ActivityCard'
+import { fetchFeedActivity } from '../../api/mockApi'
+import ActivityCard from '../ActivityCard'
+import './LiveFeed.css'
 
 interface Activity {
   id: number

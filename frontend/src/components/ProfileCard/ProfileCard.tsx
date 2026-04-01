@@ -1,3 +1,5 @@
+import './ProfileCard.css'
+
 interface UserData {
   name: string
   role: string

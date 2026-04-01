@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
-import { fetchUserById, fetchUserActivity } from '../api/mockApi'
-import ProfileCard from './ProfileCard'
-import ActivityCard from './ActivityCard'
+import { fetchUserById, fetchUserActivity } from '../../api/mockApi'
+import ProfileCard from '../ProfileCard'
+import ActivityCard from '../ActivityCard'
+import './UserProfile.css'
 
 interface Activity {
   id: number

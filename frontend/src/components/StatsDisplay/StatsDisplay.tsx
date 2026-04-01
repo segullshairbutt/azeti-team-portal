@@ -1,3 +1,5 @@
+import './StatsDisplay.css'
+
 interface TeamStats {
   members: number
   activeProjects: number

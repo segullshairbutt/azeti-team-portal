@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import { fetchTeamStats } from '../api/mockApi'
-import StatsDisplay from './StatsDisplay'
+import { fetchTeamStats } from '../../api/mockApi'
+import StatsDisplay from '../StatsDisplay'
+import './Dashboard.css'
 
 interface TeamStats {
   members: number

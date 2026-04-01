@@ -1,3 +1,5 @@
+import './ActivityCard.css'
+
 interface Activity {
   id: number
   action: string
