@@ -19,7 +19,7 @@ public class ActivityService {
     }
 
     public List<ActivityDTO> getFeedActivities() {
-        return activityRepository.findAll().stream()
+        return activityRepository.findAllWithUser().stream()
                 .map(activity -> new ActivityDTO(
                         activity.getId(),
                         activity.getAction(),
