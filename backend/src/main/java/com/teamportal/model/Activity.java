@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -23,7 +24,8 @@ public class Activity {
     private String action;
 
     @Column(nullable = false)
-    private LocalDateTime timestamp = LocalDateTime.now();
+    @CreationTimestamp
+    private LocalDateTime timestamp;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
